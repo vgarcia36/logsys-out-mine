@@ -13,11 +13,12 @@ namespace InvoicesBudgetValidator.Maps
         //Constructor
         public BudgetPartyMap()
         {
-            Table("Invoices.vw_Received");
+            Table("Invoices.Company_Reception");
 
             Id(x => x.Company_Id);
 
             Map(x => x.Budget_Is_Required);
+        }
 
     }
 }
