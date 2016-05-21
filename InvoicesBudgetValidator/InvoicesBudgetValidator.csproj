@@ -57,17 +57,20 @@
   <ItemGroup>
     <Compile Include="Controllers\BudgetController.cs" />
     <Compile Include="Controllers\BudgetInvoices.cs" />
+    <Compile Include="Controllers\CancelledBudgetController.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Helpers\NHibernateHelperBudget.cs" />
     <Compile Include="Maps\BudgetMap.cs" />
     <Compile Include="Maps\BudgetPartyMap.cs" />
     <Compile Include="Maps\ConsolidadoMap.cs" />
+    <Compile Include="Maps\ReceivedBudgetTimelineMap.cs" />
     <Compile Include="Maps\ReceivedInvoicesMap.cs" />
     <Compile Include="Model\Budget.cs" />
     <Compile Include="Model\Budget_Events.cs" />
     <Compile Include="Model\Budget_Party.cs" />
     <Compile Include="Model\Consolidado.cs" />
     <Compile Include="Model\ReceivedInvoices.cs" />
+    <Compile Include="Model\ReceivedBudgetTimeline.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
