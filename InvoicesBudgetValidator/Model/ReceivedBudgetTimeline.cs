@@ -13,8 +13,7 @@ namespace InvoicesBudgetValidator.Model
         public virtual DateTime Time { get; set; }
         public virtual DateTime Time_Tx { get; set; }
         public virtual string Identifier { get; set; }
-        public virtual string Invoice { get; set; }
-        public virtual decimal Total { get; set; }
         public virtual int Received_Status_Id { get; set; }
+        public virtual Byte[] Received_Timeline_Id { get; set; }
     }
 }

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using InvoicesBudgetValidator.Helpers;
 using InvoicesBudgetValidator.Model;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace InvoicesBudgetValidator.Controllers
 {
     class BudgetInvoices
     {
         List<Budget_Party> budgetparties;
-        List<ReceivedInvoices> receivedinvoices;
+        List<ReceivedInvoices> receivedinvoices = new List<ReceivedInvoices>();
 
         public List<ReceivedInvoices> getInvoices(int company)
         {
@@ -21,14 +22,32 @@ namespace InvoicesBudgetValidator.Controllers
                 try
                 {
 
+                    /*var source2 = session.QueryOver<ReceivedBudgetTimeline>()
+                            .Select(x => x.Identifier)
+                            .List<string>();*/
+
                 
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var source = session.QueryOver<ReceivedInvoices>()
+                    /*var source = session.QueryOver<ReceivedInvoices>()
                             .Where(c => c.Company_Id == company).And(c => c.Status_Id == 6)
                             .List<ReceivedInvoices>()
-                            .ToList<ReceivedInvoices>();
-                    receivedinvoices = source;
+                            .ToList<ReceivedInvoices>();*/
+
+                        var source3 = session.QueryOver<ReceivedInvoices>()
+                            .Where(c => c.Company_Id == company).And(c => c.Status_Id == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA || c.Status_Id == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA_NOMAIL)
+                            .OrderBy(c => c.TIme).Asc
+                            .List();
+                        if (source3 == null)
+                        {
+                            return null;
+                        }
+                        else
+                            receivedinvoices = source3.ToList<ReceivedInvoices>();
+                        
+                    
+
+                   // receivedinvoices = source;
                     //transaction.Commit();
                 }
                 session.Close();
@@ -52,7 +71,7 @@ namespace InvoicesBudgetValidator.Controllers
                     {
 
                         var source = session.QueryOver<Budget_Party>()
-                            .Where(f => f.Budget_Is_Required)
+                            .Where(f => f.Initial_status == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA)
                             .List<Budget_Party>()
                             .ToList<Budget_Party>();
                         budgetparties = source;

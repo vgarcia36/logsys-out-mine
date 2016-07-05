@@ -13,9 +13,11 @@ namespace InvoicesBudgetValidator.Maps
         //Constructor
         public ConsolidadoMap()
         {
-            Table("presupuesto.Detalle");
+            Table("presupuesto.Consolidado");
 
             Id(x => x.Id);
+
+            Map(x => x.Company_Id);
 
             Map(x => x.Vendor_Id);
 
@@ -23,7 +25,7 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Razon_Social);
 
-            Map(x => x.Presupueso);
+            Map(x => x.Presupuesto);
         }
     }
 }

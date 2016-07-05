@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using InvoicesBudgetValidator.Maps;
 using InvoicesBudgetValidator.Model;
 using NHibernate;
 
@@ -41,6 +42,15 @@ namespace InvoicesBudgetValidator.Helpers
               .ConnectionString(c => c.FromConnectionStringWithKey("ConnectionStringPresupuesto"))// Modify your ConnectionString
 
             )
+            .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<BudgetMap>())
+            .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<BudgetPartyMap>())
+            .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<ConsolidadoMap>())
             .BuildSessionFactory();
             }
 

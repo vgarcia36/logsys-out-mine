@@ -13,9 +13,9 @@ namespace InvoicesBudgetValidator.Maps
         //Constructor
         public ReceivedBudgetTimelineMap()
         {
-            Table("Invoices.vw_Received_Cancelled_Budget");
+            Table("Invoices.Received_Timeline_TMP");
 
-            Id(x => x.Identifier);
+            Id(x => x.Received_Status_Id);
 
             Map(x => x.Company_Id);
 
@@ -23,13 +23,9 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Time_Tx);
 
-            Map(x => x.Invoice);
-
-            Map(x => x.Received_Status_Id);
+            Map(x => x.Identifier);
 
             Map(x => x.User_Id);
-
-            Map(x => x.Total);
         }
     
     }

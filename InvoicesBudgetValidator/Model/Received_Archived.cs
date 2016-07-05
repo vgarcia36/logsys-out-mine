@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace InvoicesBudgetValidator.Model
 {
-    class ReceivedInvoices
+    class Received_Archived
     {
         public virtual int Company_Id { get; set; }
         public virtual int Party_Id { get; set; }

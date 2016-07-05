@@ -48,7 +48,9 @@
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -58,19 +60,23 @@
     <Compile Include="Controllers\BudgetController.cs" />
     <Compile Include="Controllers\BudgetInvoices.cs" />
     <Compile Include="Controllers\CancelledBudgetController.cs" />
+    <Compile Include="Helpers\Mail_Sender.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Helpers\NHibernateHelperBudget.cs" />
+    <Compile Include="Helpers\RequestCreator.cs" />
     <Compile Include="Maps\BudgetMap.cs" />
     <Compile Include="Maps\BudgetPartyMap.cs" />
     <Compile Include="Maps\ConsolidadoMap.cs" />
     <Compile Include="Maps\ReceivedBudgetTimelineMap.cs" />
     <Compile Include="Maps\ReceivedInvoicesMap.cs" />
+    <Compile Include="Maps\Received_Archived_Map.cs" />
     <Compile Include="Model\Budget.cs" />
-    <Compile Include="Model\Budget_Events.cs" />
+    <Compile Include="Model\Budget_Events_Presupuesto.cs" />
     <Compile Include="Model\Budget_Party.cs" />
     <Compile Include="Model\Consolidado.cs" />
     <Compile Include="Model\ReceivedInvoices.cs" />
     <Compile Include="Model\ReceivedBudgetTimeline.cs" />
+    <Compile Include="Model\Received_Archived.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,7 +84,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

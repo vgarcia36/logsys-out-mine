@@ -17,6 +17,8 @@ namespace InvoicesBudgetValidator.Maps
 
             Id(x => x.Id);
 
+            Map(x => x.Company_Id);
+
             Map(x => x.Vendor_Id);
 
             Map(x => x.RFC);
@@ -35,7 +37,7 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Referencia);
 
-            Map(x => x.Referencia);
+            Map(x => x.URL_Archivo);
 
             Map(x => x.Folio_Fiscal);
 

@@ -17,7 +17,10 @@ namespace InvoicesBudgetValidator.Maps
 
             Id(x => x.Company_Id);
 
-            Map(x => x.Budget_Is_Required);
+            Map(x => x.Send_Mail);
+
+            Map(x => x.Initial_status);
+
         }
 
     }

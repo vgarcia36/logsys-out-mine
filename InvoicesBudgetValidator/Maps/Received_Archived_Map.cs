@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 using InvoicesBudgetValidator.Model;
 
 namespace InvoicesBudgetValidator.Maps
 {
-    class ReceivedInvoicesMap : ClassMap<ReceivedInvoices>
+    class Received_Archived_Map : ClassMap<Received_Archived>
     {
         //Constructor
-        public ReceivedInvoicesMap()
+        public Received_Archived_Map()
         {
-            Table("Invoices.vw_Received_Invisibles");
+            Table("Invoices.vw_Received_Archived");
 
             Id(x => x.Identifier);
 
