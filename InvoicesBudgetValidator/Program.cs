@@ -15,10 +15,10 @@ namespace InvoicesBudgetValidator
 
             //esta parte del codigo busca y modifica las facturas con presupuesto que tengan status cancelas
 
-            var cancelled = new CancelledBudgetController();
+          /*  var cancelled = new CancelledBudgetController();
             var canceled_invoices = cancelled.getCancelledInvoices();
 
-            if (canceled_invoices.Count!= null)
+            if (canceled_invoices != null)
             {
                 foreach (var invoice in canceled_invoices)
                 {
@@ -53,7 +53,7 @@ namespace InvoicesBudgetValidator
                 }
             }
 
-
+            */
 
 
 
@@ -78,6 +78,7 @@ namespace InvoicesBudgetValidator
                     foreach (var rfc in rfcs)
                     {
                         var first_invoice = invoices.Where(i => i.Party_rfc == rfc).OrderBy(i => i.TIme).First();
+                        first_invoice.Total *= first_invoice.Exchange_Rate;
                         var budget = new BudgetController();
                         var current_budget = budget.getCompanyBudget(rfc);
 
@@ -94,26 +95,25 @@ namespace InvoicesBudgetValidator
                                 mailsender.Send_Mail("", "", "Factura aceptada");
 
                                 var request = new RequestCreator();
-                                request.createRequestUpdateStatus(1, first_invoice.Invoice_Id.Remove(0, 1));
+                                request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
                             }
                             continue;
                         }
 
-
-
                         //valida si la empresa cuenta con un registro de presupuesto, si no lo tiene lo manda al status de sin presupuesto
                         if (current_budget==null)
                         {
-                            if (first_invoice.Status_Id == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA)
+                            if (first_invoice.Status_Id == (int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO)
                             {
-                                //var mailsender = new Mail_Sender();
-                                //mailsender.Send_Mail("","","Su factura no cuenta con presupuesto.");
-                                //var request = new RequestCreator();
-                                //request.createRequestUpdateStatus((int)Budget_Events_Presupuesto.FACTURA_RECIBIDA_NOMAIL,first_invoice.Invoice_Id.Remove(0,1));
+                                var mailsender = new Mail_Sender();
+                                mailsender.Send_Mail("","","Su factura no cuenta con presupuesto.");
+                                var request = new RequestCreator();
+                                request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                             }
+                            
                         }
                         //valida si la empresa cuenta con presupuesto y si el presupuesto es suficiente, si no lo manda al status de sin presupuesto
-                        else if (first_invoice.Total <= current_budget.Acumulado)
+                        else if (first_invoice.Total <= current_budget.Acumulado && current_budget != null)
                         {
                           
                             var insertrtcompleted = budget.insertBudget(first_invoice, current_budget, (int)Budget_Events_Presupuesto.FACTURA_ACEPTADA);
@@ -124,17 +124,17 @@ namespace InvoicesBudgetValidator
                                 mailsender.Send_Mail("", "", "Factura aceptada");
 
                                 var request = new RequestCreator();
-                                request.createRequestUpdateStatus(1, first_invoice.Invoice_Id.Remove(0, 1));
+                                request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
                             }
                         }
-                        else if (first_invoice.Total >= current_budget.Acumulado)
+                        else if (first_invoice.Total >= current_budget.Acumulado && current_budget != null)
                         {
-                            if (first_invoice.Status_Id==(int)Budget_Events_Presupuesto.FACTURA_RECIBIDA)
+                            if (first_invoice.Status_Id == (int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO)
                             {
-                                //var mailsender = new Mail_Sender();
-                                //mailsender.Send_Mail("","","Su factura no cuenta con presupuesto.");
-                                //var request = new RequestCreator();
-                                //request.createRequestUpdateStatus((int)Budget_Events_Presupuesto.FACTURA_RECIBIDA_NOMAIL,first_invoice.Invoice_Id.Remove(0,1));
+                                var mailsender = new Mail_Sender();
+                                mailsender.Send_Mail("", "", "Su factura no cuenta con presupuesto.");
+                                var request = new RequestCreator();
+                                request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                             }
                         }
 

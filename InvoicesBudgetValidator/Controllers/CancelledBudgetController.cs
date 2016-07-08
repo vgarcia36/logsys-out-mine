@@ -48,14 +48,14 @@ namespace InvoicesBudgetValidator.Controllers
         public List<Received_Archived> getCancelledInvoices()
         {
 
-            var cancelled_timeline = getTimelineCancelledInvoices();
+            //var cancelled_timeline = getTimelineCancelledInvoices();
 
-            var identifiers = cancelled_timeline.Select(x => x.Identifier).ToList<string>();
+            //var identifiers = cancelled_timeline.Select(x => x.Identifier).ToList<string>();
 
             List<Received_Archived> invoices = new List<Received_Archived>();
 
-            foreach (var item in identifiers)
-            {
+//            foreach (var item in identifiers)
+  //          {
 
                 using (ISession session = NHibernateHelper.OpenSession())
                 {             
@@ -64,15 +64,11 @@ namespace InvoicesBudgetValidator.Controllers
                         using (ITransaction transaction = session.BeginTransaction())
                         {
 
-                            var invoice = session.QueryOver<Received_Archived>()
-                                .Where(z => z.Identifier == item)
+                            var invoicelist = session.QueryOver<Received_Archived>()
+                                .Where(z => z.Status_Id == (int)Menfis_Invoices_Status.FACTURA_CANCELDA_PRESUPUESTO)
                                 .List()
-                                .ToList<Received_Archived>()
-                                .FirstOrDefault();
-                            if (invoice!=null)
-                            {
-                                invoices.Add(invoice);
-                            }
+                                .ToList<Received_Archived>();
+                            invoices = invoicelist;
                             
                         }
                         session.Close();
@@ -86,7 +82,7 @@ namespace InvoicesBudgetValidator.Controllers
                 }
 
 
-            }
+ //           }
             if (invoices.Count > 0)
             {
                 return invoices;

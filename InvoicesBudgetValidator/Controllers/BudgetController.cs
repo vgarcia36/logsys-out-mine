@@ -96,21 +96,27 @@ namespace InvoicesBudgetValidator.Controllers
             {
 
 
-            Budget new_budget = new Budget()
-            {
-                Company_Id = first_invoice.Company_Id,
-                Vendor_Id = current_budget.Vendor_Id,
-                RFC = current_budget.RFC,
-                Abono = 0,
-                Cargo = first_invoice.Total,
-                Acumulado = makeOperation(event_type,current_budget.Acumulado, first_invoice.Total),
-                Evento_Tipo = event_type,
-                Usuario = "SISTEMA",
-                Fecha = DateTime.Now,
-                Referencia = getReference(event_type),
-                URL_Archivo = "",
-                Folio_Fiscal = first_invoice.Identifier
-            };
+                var operations = getOperations(event_type, first_invoice);
+
+                var cargo = operations[1];
+                var abono = operations[0];
+                var total = operations[2];
+
+                Budget new_budget = new Budget()
+                {
+                    Company_Id = first_invoice.Company_Id,
+                    Vendor_Id = current_budget.Vendor_Id,
+                    RFC = current_budget.RFC,
+                    Abono = abono,
+                    Cargo = cargo,
+                    Acumulado = makeOperation(event_type, current_budget.Acumulado, total),
+                    Evento_Tipo = event_type,
+                    Usuario = "SISTEMA",
+                    Fecha = DateTime.Now,
+                    Referencia = getReference(event_type),
+                    URL_Archivo = "",
+                    Folio_Fiscal = first_invoice.Identifier
+                };
             insertCompanyBudget(new_budget);
 
             Consolidado new_consolidado = new Consolidado()
@@ -140,15 +146,20 @@ namespace InvoicesBudgetValidator.Controllers
             try
             {
 
+                var operations = getOperations(event_type, first_invoice);
+
+                var cargo = operations[1];
+                var abono = operations[0];
+                var total = operations[2];
 
                 Budget new_budget = new Budget()
                 {
                     Company_Id = first_invoice.Company_Id,
                     Vendor_Id = current_budget.Vendor_Id,
                     RFC = current_budget.RFC,
-                    Abono = 0,
-                    Cargo = first_invoice.Total,
-                    Acumulado = makeOperation(event_type, current_budget.Acumulado, first_invoice.Total),
+                    Abono = abono,
+                    Cargo = cargo,
+                    Acumulado = makeOperation(event_type, current_budget.Acumulado,total),
                     Evento_Tipo = event_type,
                     Usuario = "SISTEMA",
                     Fecha = DateTime.Now,
@@ -224,6 +235,36 @@ namespace InvoicesBudgetValidator.Controllers
                     result = "NOTA_DE_CREDITO_CANCELADA";
                     break;
             }
+
+            return result;
+
+        }
+
+        private decimal[] getOperations(int event_type, dynamic invoice)
+        {
+            decimal[] result = new decimal[3];
+
+            switch (event_type)
+            {
+                case (int)Budget_Events_Presupuesto.FACTURA_ACEPTADA:
+                    result[0] = 0;
+                    result[1] = invoice.Total;
+                    break;
+                case (int)Budget_Events_Presupuesto.NOTA_DE_CREDITO_ACEPTADA:
+                    result[1] = 0;
+                    result[0] = invoice.Total;
+                    break;
+                case (int)Budget_Events_Presupuesto.FACTURA_CANCELADA:
+                    result[1] = 0;
+                    result[0] = invoice.Total;
+                    break;
+                case (int)Budget_Events_Presupuesto.NOTA_DE_CREDITO_CANCELADA:
+                    result[0] = 0;
+                    result[1] = invoice.Total;
+                    break;
+            }
+
+            result[2] = invoice.Total;
 
             return result;
 

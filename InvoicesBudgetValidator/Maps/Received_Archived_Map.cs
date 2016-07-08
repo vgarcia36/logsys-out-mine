@@ -37,6 +37,7 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Total);
 
+            Map(x => x.Exchange_Rate);
 
         }
     }

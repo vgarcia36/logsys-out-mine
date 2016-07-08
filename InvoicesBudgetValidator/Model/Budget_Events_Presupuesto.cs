@@ -13,7 +13,5 @@ namespace InvoicesBudgetValidator.Model
             NOTA_DE_CREDITO_ACEPTADA = 3,
             FACTURA_CANCELADA = 4,
             NOTA_DE_CREDITO_CANCELADA = 5,
-            FACTURA_RECIBIDA = 6,
-            FACTURA_RECIBIDA_NOMAIL = 7
         }
 }

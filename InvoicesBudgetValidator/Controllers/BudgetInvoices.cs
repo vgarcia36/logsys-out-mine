@@ -35,7 +35,8 @@ namespace InvoicesBudgetValidator.Controllers
                             .ToList<ReceivedInvoices>();*/
 
                         var source3 = session.QueryOver<ReceivedInvoices>()
-                            .Where(c => c.Company_Id == company).And(c => c.Status_Id == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA || c.Status_Id == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA_NOMAIL)
+                            .Where(c => c.Company_Id == company).And(c => c.Status_Id == (int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO || c.Status_Id == (int)
+                                Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL)
                             .OrderBy(c => c.TIme).Asc
                             .List();
                         if (source3 == null)
@@ -71,7 +72,7 @@ namespace InvoicesBudgetValidator.Controllers
                     {
 
                         var source = session.QueryOver<Budget_Party>()
-                            .Where(f => f.Initial_status == (int)Budget_Events_Presupuesto.FACTURA_RECIBIDA)
+                            .Where(f => f.Initial_status == (int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO)
                             .List<Budget_Party>()
                             .ToList<Budget_Party>();
                         budgetparties = source;

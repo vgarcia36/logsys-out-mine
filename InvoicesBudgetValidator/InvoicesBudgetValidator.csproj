@@ -44,6 +44,7 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
@@ -74,6 +75,7 @@
     <Compile Include="Model\Budget_Events_Presupuesto.cs" />
     <Compile Include="Model\Budget_Party.cs" />
     <Compile Include="Model\Consolidado.cs" />
+    <Compile Include="Model\Menfis_Invoices_Status.cs" />
     <Compile Include="Model\ReceivedInvoices.cs" />
     <Compile Include="Model\ReceivedBudgetTimeline.cs" />
     <Compile Include="Model\Received_Archived.cs" />

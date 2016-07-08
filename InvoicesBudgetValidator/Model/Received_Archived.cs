@@ -19,5 +19,7 @@ namespace InvoicesBudgetValidator.Model
         public virtual string Identifier { get; set; }
         public virtual int Status_Id { get; set; }
         public virtual decimal Total { get; set; }
+        public virtual decimal Exchange_Rate { get; set; }
+
     }
 }
