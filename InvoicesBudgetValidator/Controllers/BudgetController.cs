@@ -12,9 +12,9 @@ namespace InvoicesBudgetValidator.Controllers
     class BudgetController
     {
 
-        Budget source;
+        Consolidado source;
 
-        public Budget getCompanyBudget(string rfc)
+        public Consolidado getCompanyBudget(string rfc, long company)
         {
             using (ISession session = NHibernateHelperBudget.OpenSession())
             {
@@ -22,10 +22,9 @@ namespace InvoicesBudgetValidator.Controllers
                 {
                     using (ITransaction transaction = session.BeginTransaction())
                     {
-                        source = session.QueryOver<Budget>()
-                                .Where(c => c.RFC == rfc)
+                        source = session.QueryOver<Consolidado>()
+                                .Where(c => c.RFC == rfc && c.Company_Id == company)
                                 .List()
-                                .OrderBy(x => x.Fecha)
                                 .Last();
                         //transaction.Commit();
                     }
@@ -73,7 +72,7 @@ namespace InvoicesBudgetValidator.Controllers
                 {
                     using (ITransaction transaction = session.BeginTransaction())
                     {
-                        session.Update(newconsolidado);
+                        session.SaveOrUpdate(newconsolidado);
 
                         transaction.Commit();
                     }
@@ -89,7 +88,7 @@ namespace InvoicesBudgetValidator.Controllers
         }
 
 
-        public bool insertBudget(ReceivedInvoices first_invoice, Budget current_budget, int event_type)
+        public bool insertBudget(ReceivedInvoices first_invoice, Consolidado current_budget, int event_type)
         {
 
             try
@@ -109,7 +108,7 @@ namespace InvoicesBudgetValidator.Controllers
                     RFC = current_budget.RFC,
                     Abono = abono,
                     Cargo = cargo,
-                    Acumulado = makeOperation(event_type, current_budget.Acumulado, total),
+                    Acumulado = makeOperation(event_type, current_budget.Presupuesto, total),
                     Evento_Tipo = event_type,
                     Usuario = "SISTEMA",
                     Fecha = DateTime.Now,
@@ -121,6 +120,7 @@ namespace InvoicesBudgetValidator.Controllers
 
             Consolidado new_consolidado = new Consolidado()
             {
+                Id = current_budget.Id,
                 Company_Id = current_budget.Company_Id,
                 Vendor_Id = current_budget.Vendor_Id,
                 RFC = current_budget.RFC,

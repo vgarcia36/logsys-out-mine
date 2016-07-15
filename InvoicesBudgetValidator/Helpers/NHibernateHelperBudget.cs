@@ -39,7 +39,7 @@ namespace InvoicesBudgetValidator.Helpers
             {
                 _sessionFactory = Fluently.Configure()
             .Database(MsSqlConfiguration.MsSql2012
-              .ConnectionString(c => c.FromConnectionStringWithKey("ConnectionStringPresupuesto"))// Modify your ConnectionString
+              .ConnectionString(c => c.FromConnectionStringWithKey("ConnectionStringPresupuesto")).ShowSql// Modify your ConnectionString
 
             )
             .Mappings(m =>

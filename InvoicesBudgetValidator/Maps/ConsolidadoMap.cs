@@ -15,7 +15,7 @@ namespace InvoicesBudgetValidator.Maps
         {
             Table("presupuesto.Consolidado");
 
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Increment();
 
             Map(x => x.Company_Id);
 

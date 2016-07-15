@@ -45,6 +45,15 @@
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\MongoDB.Bson.2.2.4\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\MongoDB.Driver.2.2.4\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
@@ -61,6 +70,7 @@
     <Compile Include="Controllers\BudgetController.cs" />
     <Compile Include="Controllers\BudgetInvoices.cs" />
     <Compile Include="Controllers\CancelledBudgetController.cs" />
+    <Compile Include="Controllers\MongoMails.cs" />
     <Compile Include="Helpers\Mail_Sender.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Helpers\NHibernateHelperBudget.cs" />
@@ -75,6 +85,8 @@
     <Compile Include="Model\Budget_Events_Presupuesto.cs" />
     <Compile Include="Model\Budget_Party.cs" />
     <Compile Include="Model\Consolidado.cs" />
+    <Compile Include="Model\Invoices_Types.cs" />
+    <Compile Include="Model\Default_Mail.cs" />
     <Compile Include="Model\Menfis_Invoices_Status.cs" />
     <Compile Include="Model\ReceivedInvoices.cs" />
     <Compile Include="Model\ReceivedBudgetTimeline.cs" />
@@ -83,7 +95,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

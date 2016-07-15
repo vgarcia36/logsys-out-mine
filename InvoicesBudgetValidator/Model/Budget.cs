@@ -7,9 +7,9 @@ namespace InvoicesBudgetValidator.Model
 {
     class Budget
     {
-        public virtual int Id { get; set; }
-        public virtual int Company_Id { get; set; }
-        public virtual int Vendor_Id { get; set; }
+        public virtual long Id { get; set; }
+        public virtual long Company_Id { get; set; }
+        public virtual long Vendor_Id { get; set; }
         public virtual string RFC { get; set; }
         public virtual decimal Abono { get; set; }
         public virtual decimal Cargo { get; set; }
