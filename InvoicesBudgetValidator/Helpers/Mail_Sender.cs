@@ -9,8 +9,15 @@ namespace InvoicesBudgetValidator.Helpers
 {
     class Mail_Sender
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+        ("Program");
+
         public void Send_Mail(string mensaje, string mail_to,string subject)
         {
+
+            
+
             try
             {
                 string mailinfo = ConfigurationManager.AppSettings["mailconnection"].ToString();
@@ -40,7 +47,7 @@ namespace InvoicesBudgetValidator.Helpers
             catch (Exception e)
             {
 
-                Console.WriteLine(e.Message);
+                log.Error(e);
             }
 
         }

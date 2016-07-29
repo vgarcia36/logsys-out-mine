@@ -13,60 +13,15 @@ namespace InvoicesBudgetValidator
 
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger
-   ("Program");
+        ("Program");
 
         static void Main(string[] args)
         {
 
-            //esta parte del codigo busca y modifica las facturas con presupuesto que tengan status cancelas
-
-          /*  var cancelled = new CancelledBudgetController();
-            var canceled_invoices = cancelled.getCancelledInvoices();
-
-            if (canceled_invoices != null)
-            {
-                foreach (var invoice in canceled_invoices)
-                {
-                    var budget = new BudgetController();
-                    var current_budget = budget.getCompanyBudget(invoice.Party_rfc);
-                    if (current_budget != null)
-                    {
-                        if (invoice.Invoice.Substring(0, 2) == "NC")
-                        {
-                            var insertrtcompleted = budget.insertBudget(invoice, current_budget, (int)Budget_Events_Presupuesto.NOTA_DE_CREDITO_CANCELADA);
-
-                            if (insertrtcompleted)
-                            {
-                                var mailsender = new Mail_Sender();
-                                mailsender.Send_Mail("", "", "Factura aceptada");
-
-                                var request = new RequestCreator();
-                                request.createRequestUpdateStatus(2, invoice.Invoice_Id.Remove(0, 1));
-                            }
-                        }
-                        else{
-                        var insertrtcompleted = budget.insertBudget(invoice, current_budget, (int)Budget_Events_Presupuesto.FACTURA_CANCELADA);
-
-                        if (insertrtcompleted)
-                        {
-                            var request = new RequestCreator();
-                            request.createRequestUpdateStatus(2, invoice.Invoice_Id.Remove(0, 1));
-                        }    
-                        }
-                    }
-                    
-                }
-            }
-
-            */
-
-
-
+            log4net.Config.XmlConfigurator.Configure();
 
             try
             {
-
-
 
                 //esta parte del codigo busca y modifica las facturas recibidas
 
@@ -102,7 +57,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id=first_invoice.Company_Id,rfc=first_invoice.Party_rfc});
-                                    mailsender.Send_Mail("", defaultmail, "Factura aceptada");
+                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido aprovada.", defaultmail, "Factura aprovada");
 
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
@@ -123,7 +78,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("", defaultmail, "Su factura no cuenta con presupuesto.");
+                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido validada exitosamente, sin embargo, aún no cuenta con aprobación para accesar a nuestro sistema. Por favor comuníquese con el contacto que le solicitó el bien o servicio.", defaultmail, "Validación de comprobante fiscal.");
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                                 }
@@ -140,7 +95,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("", defaultmail, "Factura aceptada");
+                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido aprovada.", defaultmail, "Factura aprovada");
 
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
@@ -153,7 +108,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("", defaultmail, "Su factura no cuenta con presupuesto.");
+                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido validada exitosamente, sin embargo, aún no cuenta con aprobación para accesar a nuestro sistema. Por favor comuníquese con el contacto que le solicitó el bien o servicio.", defaultmail, "Validación de comprobante fiscal.");
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                                 }

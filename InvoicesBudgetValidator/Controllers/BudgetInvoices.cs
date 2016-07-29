@@ -14,6 +14,8 @@ namespace InvoicesBudgetValidator.Controllers
     {
         List<Budget_Party> budgetparties;
         List<ReceivedInvoices> receivedinvoices = new List<ReceivedInvoices>();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+       ("Program");
 
         public List<ReceivedInvoices> getInvoices(int company)
         {
@@ -54,9 +56,10 @@ namespace InvoicesBudgetValidator.Controllers
                 session.Close();
                 return receivedinvoices;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     session.Close();
+                    log.Error(e);
                     return null;
                 }
             }
@@ -82,9 +85,10 @@ namespace InvoicesBudgetValidator.Controllers
                     return budgetparties;
                     //transaction.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     session.Close();
+                    log.Error(e);
                     return null;
                 }
 

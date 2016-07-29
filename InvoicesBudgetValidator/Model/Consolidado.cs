@@ -8,7 +8,7 @@ namespace InvoicesBudgetValidator.Model
 {
     class Consolidado
     {
-        public virtual long Id { get; set; }
+        public virtual long Id_presupuesto { get; set; }
         public virtual long Company_Id { get; set; }
         public virtual long Vendor_Id { get; set; }
         public virtual string RFC { get; set; }

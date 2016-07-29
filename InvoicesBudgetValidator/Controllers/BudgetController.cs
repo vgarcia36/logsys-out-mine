@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using InvoicesBudgetValidator.Helpers;
@@ -11,7 +12,8 @@ namespace InvoicesBudgetValidator.Controllers
 {
     class BudgetController
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+        ("Program");
         Consolidado source;
 
         public Consolidado getCompanyBudget(string rfc, long company)
@@ -31,9 +33,10 @@ namespace InvoicesBudgetValidator.Controllers
                     session.Close();
                     return source;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     session.Close();
+                    log.Error(e);
                     return null;
                 }
             }
@@ -41,24 +44,54 @@ namespace InvoicesBudgetValidator.Controllers
         }
 
 
-        private void insertCompanyBudget(Budget newbudget)
+        private bool insertCompanyBudget(Budget newbudget, Consolidado newconsolidado)
         {
+
             using (ISession session = NHibernateHelperBudget.OpenSession())
             {
                 try
                 {
                     using (ITransaction transaction = session.BeginTransaction())
                     {
-                        session.Save(newbudget);
-                        
-                        transaction.Commit();
+                        try
+                        {
+                            
+
+                            session.Update(newconsolidado);
+
+                            session.Save(newbudget);
+
+                            transaction.Commit();
+
+                            session.Close();
+
+                            return true;
+                        }
+                        catch (WebException e)
+                        {
+                            transaction.Rollback();
+                            log.Error(e);
+                            return false;
+                            //throw;
+                        }
+
+
+                        catch (Exception e)
+                        {
+                            transaction.Rollback();
+                            log.Error(e);
+                            return false;
+                            //throw;
+                        }
                     }
-                    session.Close();
+                    
                    // return source;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     session.Close();
+                    log.Error(e);
+                    return false;
                    // return null;
                 }
             }
@@ -79,9 +112,10 @@ namespace InvoicesBudgetValidator.Controllers
                     session.Close();
                     // return source;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     session.Close();
+                    log.Error(e);
                     // return null;
                 }
             }
@@ -109,32 +143,35 @@ namespace InvoicesBudgetValidator.Controllers
                     Abono = abono,
                     Cargo = cargo,
                     Acumulado = makeOperation(event_type, current_budget.Presupuesto, total),
-                    Evento_Tipo = event_type,
+                    id_evento = event_type,
+                    id_usuario = 10,
                     Usuario = "SISTEMA",
                     Fecha = DateTime.Now,
                     Referencia = getReference(event_type),
-                    URL_Archivo = "",
+                    Id_Archivo = null,
                     Folio_Fiscal = first_invoice.Identifier
                 };
-            insertCompanyBudget(new_budget);
+            //insertCompanyBudget(new_budget);
 
             Consolidado new_consolidado = new Consolidado()
             {
-                Id = current_budget.Id,
+                Id_presupuesto = current_budget.Id_presupuesto,
                 Company_Id = current_budget.Company_Id,
                 Vendor_Id = current_budget.Vendor_Id,
                 RFC = current_budget.RFC,
                 Razon_Social = first_invoice.Party,
                 Presupuesto = new_budget.Acumulado
             };
-            updateConsolidado(new_consolidado);
+            //updateConsolidado(new_consolidado);
 
-            return true;
+
+            return insertCompanyBudget(new_budget,new_consolidado);
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                log.Error(e);
                 return false;
             }
 
@@ -160,14 +197,14 @@ namespace InvoicesBudgetValidator.Controllers
                     Abono = abono,
                     Cargo = cargo,
                     Acumulado = makeOperation(event_type, current_budget.Acumulado,total),
-                    Evento_Tipo = event_type,
+                    id_evento = event_type,
                     Usuario = "SISTEMA",
                     Fecha = DateTime.Now,
                     Referencia = getReference(event_type),
-                    URL_Archivo = "",
+                    Id_Archivo = null,
                     Folio_Fiscal = first_invoice.Identifier
                 };
-                insertCompanyBudget(new_budget);
+                //insertCompanyBudget(new_budget);
 
                 Consolidado new_consolidado = new Consolidado()
                 {
@@ -177,14 +214,15 @@ namespace InvoicesBudgetValidator.Controllers
                     Razon_Social = first_invoice.Party,
                     Presupuesto = new_budget.Acumulado
                 };
-                updateConsolidado(new_consolidado);
+                //updateConsolidado(new_consolidado);
 
-                return true;
+                return insertCompanyBudget(new_budget,new_consolidado);
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                log.Error(e);
                 return false;
             }
 

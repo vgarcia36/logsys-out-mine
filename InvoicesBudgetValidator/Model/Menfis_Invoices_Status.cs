@@ -10,8 +10,8 @@ namespace InvoicesBudgetValidator.Model
         {
             FACTURA_RECIBIDA = 1,
             FACTURA_CANCELADA = 2,
-            FACTURA_RECIBIDA_PRESUPUESTO = 6,
-            FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL = 7,
+            FACTURA_RECIBIDA_PRESUPUESTO = 301,
+            FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL = 302,
             FACTURA_CANCELDA_PRESUPUESTO = 8
         }
  }

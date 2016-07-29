@@ -13,9 +13,9 @@ namespace InvoicesBudgetValidator.Maps
         //Constructor
         public BudgetMap()
         {
-            Table("presupuesto.Detalle");
+            Table("Presupuesto.Detalle");
 
-            Id(x => x.Id);
+            Id(x => x.Id_presupuesto);
 
             Map(x => x.Company_Id);
 
@@ -29,7 +29,9 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Acumulado);
 
-            Map(x => x.Evento_Tipo);
+            Map(x => x.id_evento);
+
+            Map(x => x.id_usuario);
 
             Map(x => x.Usuario);
 
@@ -37,7 +39,7 @@ namespace InvoicesBudgetValidator.Maps
 
             Map(x => x.Referencia);
 
-            Map(x => x.URL_Archivo);
+            Map(x => x.Id_Archivo);
 
             Map(x => x.Folio_Fiscal);
 

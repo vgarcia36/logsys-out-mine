@@ -13,9 +13,9 @@ namespace InvoicesBudgetValidator.Maps
         //Constructor
         public ConsolidadoMap()
         {
-            Table("presupuesto.Consolidado");
+            Table("Presupuesto.Consolidado");
 
-            Id(x => x.Id).GeneratedBy.Increment();
+            Id(x => x.Id_presupuesto).GeneratedBy.Increment();
 
             Map(x => x.Company_Id);
 
