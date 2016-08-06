@@ -44,7 +44,7 @@ namespace InvoicesBudgetValidator.Controllers
         }
 
 
-        private bool insertCompanyBudget(Budget newbudget, Consolidado newconsolidado)
+        private bool insertCompanyBudget(Budget newbudget, Consolidado newconsolidado, ReceivedInvoices first_invoice)
         {
 
             using (ISession session = NHibernateHelperBudget.OpenSession())
@@ -62,6 +62,9 @@ namespace InvoicesBudgetValidator.Controllers
                             session.Save(newbudget);
 
                             transaction.Commit();
+
+                            var request = new RequestCreator();
+                            request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
 
                             session.Close();
 
@@ -122,7 +125,7 @@ namespace InvoicesBudgetValidator.Controllers
         }
 
 
-        public bool insertBudget(ReceivedInvoices first_invoice, Consolidado current_budget, int event_type)
+        public bool insertBudget(ReceivedInvoices first_invoice, Consolidado current_budget, int event_type, ReceivedInvoices invoice)
         {
 
             try
@@ -165,7 +168,7 @@ namespace InvoicesBudgetValidator.Controllers
             //updateConsolidado(new_consolidado);
 
 
-            return insertCompanyBudget(new_budget,new_consolidado);
+            return insertCompanyBudget(new_budget,new_consolidado,invoice);
 
             }
             catch (Exception e)
@@ -177,7 +180,7 @@ namespace InvoicesBudgetValidator.Controllers
 
         }
 
-        public bool insertBudget(Received_Archived first_invoice, Budget current_budget, int event_type)
+        public bool insertBudget(Received_Archived first_invoice, Budget current_budget, int event_type, ReceivedInvoices invoice)
         {
 
             try
@@ -216,7 +219,7 @@ namespace InvoicesBudgetValidator.Controllers
                 };
                 //updateConsolidado(new_consolidado);
 
-                return insertCompanyBudget(new_budget,new_consolidado);
+                return insertCompanyBudget(new_budget,new_consolidado,invoice);
 
             }
             catch (Exception e)

@@ -8,6 +8,7 @@ namespace InvoicesBudgetValidator.Model
     class ReceivedInvoices
     {
         public virtual int Company_Id { get; set; }
+        public virtual string Company { get; set; }
         public virtual int Party_Id { get; set; }
         public virtual string Party { get; set; }
         public virtual string Invoice_Id { get; set; }

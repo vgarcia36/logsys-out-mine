@@ -51,6 +51,9 @@ namespace InvoicesBudgetValidator.Helpers
             .Mappings(m =>
                           m.FluentMappings
                               .AddFromAssemblyOf<Received_Archived_Map>())
+            .Mappings(m =>
+                          m.FluentMappings
+                              .AddFromAssemblyOf<PartyMap>())
             .BuildSessionFactory();
             }
 

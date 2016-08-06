@@ -1,0 +1,7 @@
+﻿Factura con Presupuesto
+EL CFDi @INVOICENO FUÉ RECIBIDO EXITOSAMENTE.
+
+DATOS
+
+        EMISOR: @EMISOR
+        RECEPTOR: @RECEPTOR

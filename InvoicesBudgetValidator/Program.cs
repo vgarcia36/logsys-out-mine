@@ -50,17 +50,14 @@ namespace InvoicesBudgetValidator
                             //si es nota de credito inserta directo al presupuesto 
                             if (first_invoice.Type_Id == (int)Invoices_types.EGRESO && current_budget != null)
                             {
-                                var insertrtcompleted = budget.insertBudget(first_invoice, current_budget, (int)Budget_Events_Presupuesto.NOTA_DE_CREDITO_ACEPTADA);
+                                var insertrtcompleted = budget.insertBudget(first_invoice, current_budget, (int)Budget_Events_Presupuesto.NOTA_DE_CREDITO_ACEPTADA,first_invoice);
 
                                 if (insertrtcompleted)
                                 {
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id=first_invoice.Company_Id,rfc=first_invoice.Party_rfc});
-                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido aprovada.", defaultmail, "Factura aprovada");
-
-                                    var request = new RequestCreator();
-                                    request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
+                                    mailsender.Send_Mail(first_invoice,(int)Mail_Type.BUDGETMAIL, defaultmail, "Factura aprovada");
                                 }
                                 continue;
                             }
@@ -78,7 +75,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido validada exitosamente, sin embargo, aún no cuenta con aprobación para accesar a nuestro sistema. Por favor comuníquese con el contacto que le solicitó el bien o servicio.", defaultmail, "Validación de comprobante fiscal.");
+                                    mailsender.Send_Mail(first_invoice, (int)Mail_Type.NOBUDGETMAIL, defaultmail, "Validación de comprobante fiscal.");
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                                 }
@@ -88,17 +85,16 @@ namespace InvoicesBudgetValidator
                             else if (first_invoice.Total <= current_budget.Presupuesto && current_budget != null && (first_invoice.Type_Id == (int)Invoices_types.INGRESO || first_invoice.Type_Id == (int)Invoices_types.TRASLADO) )
                             {
 
-                                var insertrtcompleted = budget.insertBudget(first_invoice, current_budget, (int)Budget_Events_Presupuesto.FACTURA_ACEPTADA);
+                                var insertrtcompleted = budget.insertBudget(first_invoice, current_budget, (int)Budget_Events_Presupuesto.FACTURA_ACEPTADA,first_invoice);
 
                                 if (insertrtcompleted)
                                 {
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido aprovada.", defaultmail, "Factura aprovada");
+                                    mailsender.Send_Mail(first_invoice, (int)Mail_Type.BUDGETMAIL, defaultmail, "Factura aprovada");
 
-                                    var request = new RequestCreator();
-                                    request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
+                                    
                                 }
                             }
                             else if (first_invoice.Total >= current_budget.Presupuesto && current_budget != null)
@@ -108,7 +104,7 @@ namespace InvoicesBudgetValidator
                                     var mailsender = new Mail_Sender();
                                     var monngomails = new MongoMails();
                                     string defaultmail = monngomails.getResponseMail(new Default_Mail() { company_id = first_invoice.Company_Id, rfc = first_invoice.Party_rfc });
-                                    mailsender.Send_Mail("El comprobante con UUID " + first_invoice.Identifier + " ha sido validada exitosamente, sin embargo, aún no cuenta con aprobación para accesar a nuestro sistema. Por favor comuníquese con el contacto que le solicitó el bien o servicio.", defaultmail, "Validación de comprobante fiscal.");
+                                    mailsender.Send_Mail(first_invoice, (int)Mail_Type.NOBUDGETMAIL, defaultmail, "Validación de comprobante fiscal.");
                                     var request = new RequestCreator();
                                     request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA_PRESUPUESTO_NOMAIL, first_invoice.Invoice_Id.Remove(0, 1));
                                 }

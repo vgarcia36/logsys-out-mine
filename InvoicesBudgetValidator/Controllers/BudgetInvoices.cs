@@ -47,8 +47,6 @@ namespace InvoicesBudgetValidator.Controllers
                         }
                         else
                             receivedinvoices = source3.ToList<ReceivedInvoices>();
-                        
-                    
 
                    // receivedinvoices = source;
                     //transaction.Commit();
