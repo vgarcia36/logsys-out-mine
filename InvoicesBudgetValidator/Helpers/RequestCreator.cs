@@ -17,17 +17,22 @@ namespace InvoicesBudgetValidator.Helpers
         public void createRequestUpdateStatus(int status, string invoice_id)
         {
 
-
-            try
-            {
-
+            
                 string auth = Base64Encode(ConfigurationManager.AppSettings["presupuesto_user"].ToString());
 
                 string services_host = ConfigurationManager.AppSettings["menfisservices"].ToString();
 
+                log.Info("request url: " + services_host + invoice_id + "/status/" + status);
+
 
                 using (var client = new WebClient())
                 {
+
+                try
+                {
+
+                
+
                     var values = new NameValueCollection();
 
                     client.Headers.Add("Authorization: Basic " + auth);
@@ -36,16 +41,20 @@ namespace InvoicesBudgetValidator.Helpers
 
                     var responseString = Encoding.Default.GetString(response);
 
+                    log.Info(responseString);
+
 
                     var responsecode = client.ResponseHeaders;
 
                 }
+                catch (Exception e)
+                {
+                    log.Error("request url: " + services_host + invoice_id + "/status/" + status);
+                    log.Error(e);
+                }
 
 
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
+
             }
 
 

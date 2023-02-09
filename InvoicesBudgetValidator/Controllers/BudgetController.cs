@@ -36,7 +36,7 @@ namespace InvoicesBudgetValidator.Controllers
                 catch (Exception e)
                 {
                     session.Close();
-                    log.Error(e);
+                    //log.Error(e);
                     return null;
                 }
             }
@@ -61,10 +61,18 @@ namespace InvoicesBudgetValidator.Controllers
 
                             session.Save(newbudget);
 
-                            transaction.Commit();
-
                             var request = new RequestCreator();
-                            request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, first_invoice.Invoice_Id.Remove(0, 1));
+
+                            var id_invoice = "";
+
+                            if (first_invoice.Invoice_Id.Contains("r"))
+                            {
+                                id_invoice = first_invoice.Invoice_Id.Replace("r", "");
+                            }
+
+                            request.createRequestUpdateStatus((int)Menfis_Invoices_Status.FACTURA_RECIBIDA, id_invoice);     
+
+                            transaction.Commit();
 
                             session.Close();
 
@@ -134,8 +142,8 @@ namespace InvoicesBudgetValidator.Controllers
 
                 var operations = getOperations(event_type, first_invoice);
 
-                var cargo = operations[1];
-                var abono = operations[0];
+                var cargo = operations[0];
+                var abono = operations[1];
                 var total = operations[2];
 
                 Budget new_budget = new Budget()
@@ -188,8 +196,8 @@ namespace InvoicesBudgetValidator.Controllers
 
                 var operations = getOperations(event_type, first_invoice);
 
-                var cargo = operations[1];
-                var abono = operations[0];
+                var abono = operations[1];
+                var cargo = operations[0];
                 var total = operations[2];
 
                 Budget new_budget = new Budget()

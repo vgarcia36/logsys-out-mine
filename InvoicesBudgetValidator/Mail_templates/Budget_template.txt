@@ -1,7 +1,4 @@
-﻿Factura con Presupuesto
-EL CFDi @INVOICENO FUÉ RECIBIDO EXITOSAMENTE.
+﻿<b>EL CFDi @INVOICENO FUÉ RECIBIDO EXITOSAMENTE.</b></BR><dl><dt>DATOS</dt><dd><ul><li>EMISOR: @EMISOR</li><li>RECEPTOR: @RECEPTOR</li></ul></dd></dl></BR>
 
-DATOS
-
-        EMISOR: @EMISOR
-        RECEPTOR: @RECEPTOR
+LA RECEPCIÓN DE ESTE DOCUMENTO NO IMPLICA RECONOCIMIENTO DE ADEUDO
+Mensaje generado de forma automática, Favor de no responder.

@@ -26,6 +26,12 @@ namespace InvoicesBudgetValidator.Helpers
             {
                 string mailinfo = ConfigurationManager.AppSettings["mailconnection"].ToString();
                 string savedir = ConfigurationManager.AppSettings["mailsavedir"].ToString();
+
+
+
+
+               
+
                 var maildinnfofields = mailinfo.Split(';');
                 int count = 0;
                 foreach (var item in maildinnfofields)
@@ -42,6 +48,7 @@ namespace InvoicesBudgetValidator.Helpers
                 message.To.Add(mail_to);
                 message.Subject = subject;
                 message.From = new System.Net.Mail.MailAddress(user);
+                message.IsBodyHtml = true;
                 message.Body = messageBuilder(invoice,type);
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(host);
                 smtp.Port = port;
@@ -51,7 +58,89 @@ namespace InvoicesBudgetValidator.Helpers
 
                 SmtpClient client = new SmtpClient("mysmtphost");
                 client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-                client.PickupDirectoryLocation =savedir;
+
+
+
+                DateTime date = DateTime.Now;
+
+                string savepath = Path.Combine(savedir, invoice.Company + "/" + date.Year + "/" + date.Month + "/" + date.Day);
+
+                if (!Directory.Exists(savepath))
+                {
+                    Directory.CreateDirectory(savepath);
+                }
+
+                client.PickupDirectoryLocation =savepath;
+                client.Send(message);
+
+
+
+
+            }
+            catch (Exception e)
+            {
+
+                log.Error(e);
+            }
+
+        }
+
+
+        public void Send_Mail_Test(string mail_to, string subject)
+        {
+
+
+
+            try
+            {
+                string mailinfo = ConfigurationManager.AppSettings["mailconnection"].ToString();
+                string savedir = ConfigurationManager.AppSettings["mailsavedir"].ToString();
+
+
+
+
+
+
+                var maildinnfofields = mailinfo.Split(';');
+                int count = 0;
+                foreach (var item in maildinnfofields)
+                {
+                    maildinnfofields[count] = item.Remove(0, item.Split('=')[0].Length + 1);
+                    count++;
+                }
+                int port = Convert.ToInt32(maildinnfofields[0]);
+                string host = maildinnfofields[1];
+                string user = maildinnfofields[2];
+                string password = maildinnfofields[3];
+                //string mailto = maildinnfofields[4];
+                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                message.To.Add(mail_to);
+                message.Subject = subject;
+                message.From = new System.Net.Mail.MailAddress(user);
+                message.IsBodyHtml = true;
+                message.Body = "Test prueba";
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(host);
+                smtp.Port = port;
+                smtp.Credentials = new System.Net.NetworkCredential(user, password);
+                smtp.EnableSsl = true;
+                smtp.Send(message);
+
+                SmtpClient client = new SmtpClient("mysmtphost");
+                client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+
+
+
+                DateTime date = DateTime.Now;
+
+                //string savepath = Path.Combine(savedir, invoice.Company + "/" + date.Year + "/" + date.Month + "/" + date.Day);
+                string savepath = Path.Combine(@"D:\testbudget");
+
+                if (!Directory.Exists(savepath))
+                {
+                    Directory.CreateDirectory(savepath);
+                }
+
+                client.PickupDirectoryLocation = savepath;
                 client.Send(message);
 
 
